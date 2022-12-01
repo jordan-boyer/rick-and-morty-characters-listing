@@ -1,29 +1,46 @@
-import type { Character, CharacterFilter, Info } from 'rickmortyapi/dist/interfaces'
+import type {
+  Character,
+  CharacterFilter,
+  Info,
+} from "rickmortyapi/dist/interfaces";
 
-export const useCharactersStore = () => {
-  const characters = useState<Map<string, Info<Character[]>>>('characters', () => new Map())
+export default function useCharactersStore() {
+  const characters = useState<Map<string, Info<Character[]>>>(
+    "characters",
+    () => new Map()
+  );
 
-  const getCharacters = (filters: CharacterFilter) => {
-    const key = JSON.stringify(filters)
-    return characters.value.get(key) ?? {
-      results: undefined,
-      info: undefined,
-    }
+  function getCharacters(filters: Readonly<CharacterFilter>) {
+    const key = JSON.stringify(filters);
+    return (
+      characters.value.get(key) ?? {
+        results: undefined,
+        info: undefined,
+      }
+    );
   }
 
-  const getCharacter = (id: number) => {
+  function getCharacter(id: number) {
     for (const characterPerPages of characters.value.values()) {
-      const character = characterPerPages.results?.find(character => character.id === id)
-      if (character)
-        return character
+      const foundCharacter = characterPerPages.results?.find(
+        (character) => character.id === id
+      );
+      if (foundCharacter) {
+        return foundCharacter;
+      }
     }
-    return undefined
+    return undefined;
   }
 
-  const addCharacters = (filters: CharacterFilter, charactersToAdd: Info<Character[]>) => {
-    const key = JSON.stringify(filters)
-    characters.value.set(key, charactersToAdd)
+  function addCharacters(
+    filters: Readonly<CharacterFilter>,
+    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+    charactersToAdd: Info<Character[]>
+  ) {
+    const key = JSON.stringify(filters);
+    characters.value.set(key, charactersToAdd);
+    return charactersToAdd;
   }
 
-  return { getCharacter, getCharacters, addCharacters }
+  return { getCharacter, getCharacters, addCharacters };
 }

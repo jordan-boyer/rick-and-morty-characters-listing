@@ -1,10 +1,11 @@
 <template>
-  <div class="bg-[#16ACC9] text-black p-8 min-h-screen text-lg">
-    <nav class="flex justify-center pb-4">
-      <h1 class="font-bold">
-        Rick and Morty characters listing
-      </h1>
-    </nav>
-    <slot />
-  </div>
+  <v-app-bar app>
+    <v-app-bar-nav-icon />
+    <v-toolbar-title>Rick and Morty characters listing</v-toolbar-title>
+  </v-app-bar>
+  <v-main>
+    <v-container>
+      <slot />
+    </v-container>
+  </v-main>
 </template>

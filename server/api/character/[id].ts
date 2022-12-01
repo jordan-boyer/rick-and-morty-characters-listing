@@ -1,9 +1,11 @@
-import { getCharacter } from 'rickmortyapi'
+import { getCharacter } from "rickmortyapi";
+import type { ApiResponse, Character } from "rickmortyapi/dist/interfaces";
 
-export default defineEventHandler(async (event) => {
-  const id = Number(event.context.params.id)
+export default defineEventHandler(
+  async (event): Promise<ApiResponse<Character | { [key: string]: never }>> => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const parameters: { id: string } = event.context.params;
 
-  const data = await getCharacter(id)
-
-  return data
-})
+    return await getCharacter(Number(parameters.id));
+  }
+);
